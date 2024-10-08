@@ -1,0 +1,63 @@
+openapi: 3.0.0
+info:
+  title: Movie Ticket Purchase API
+  version: 1.0.0
+  description: >
+    This API processes payment for reserved seats.
+
+paths:
+  /payments:
+    post:
+      summary: Process payment for reserved seats
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - reservationId
+                - cardNumber
+                - expiryDate
+                - cvv
+              properties:
+                reservationId:
+                  type: string
+                  description: Unique identifier for the reservation
+                cardNumber:
+                  type: string
+                  description: Credit card number
+                expiryDate:
+                  type: string
+                  description: Expiration date in MM/YY format
+                cvv:
+                  type: string
+                  description: Card security code
+      responses:
+        '200':
+          description: Payment successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  paymentId:
+                    type: string
+                    description: Unique identifier for the payment
+                  tickets:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        ticketId:
+                          type: string
+                        seatNumber:
+                          type: string
+                        movieTitle:
+                          type: string
+                        showtime:
+                          type: string
+        '400':
+          description: Invalid payment details
+        '404':
+          description: Reservation not found
